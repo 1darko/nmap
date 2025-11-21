@@ -1,2 +1,77 @@
-https://www.utc.edu/sites/default/files/2021-04/4660-lab2.pdf
+DECOY : Multiple IPs
 
+https://stackoverflow.com/questions/72526066/how-does-nmap-decoy-works
+
+Functionnement : 
+On spam avec notre adresse et des fausses adresses en meme temps (Celles ci doivent etre vivantes).
+Le system ne sait pas quelle adresse est la notre / qui l'attaque 
+
+SYN, NULL, ACK, FIN, XMAS, UDP
+
+    =TCP scans=
+
+-sA     ACK SCAN    [https://nmap.org/book/scan-methods-ack-scan.html#scan-methods-ex-sco-ack-scan]
+                    [https://nmap.org/book/scan-methods-connect-scan.html]
+        >Send ACK (FIREWALL DETECTION)
+            >Receive RST 
+                Nothing to do -> Unfiltered port (Might be open / close)
+            >No response or send ICMP unreachable error (type 3, code 1, 2, 3, 9, 10, or 13) 
+                port filtered (protected with firewall)
+
+-sS     SYN SCAN [https://nmap.org/book/synscan.html]
+        >Send SYN 
+            >Receive SYN/ACK -> port open 
+                Send back RST, if no RST, target keeps spamming with SYN/ACK
+            >Receive RST 
+                Nothing to do -> port closed
+            >No response
+                port filtered (protected with firewall)
+    
+ [https://nmap.org/book/scan-methods-null-fin-xmas-scan.html]
+    Can't both be ON at the same time
+-sN     NULL SCAN       Does not set any bits (TCP flag header is 0)
+        >Send TCP packet (NO flags ON)
+            open    -> no response
+            close   -> RST
+-sX     XMAS SCAN       Sets the FIN, PSH, and URG flags
+        >Send TCP packet(FIN, PSH, URG flags ON)
+            open    -> no reponse
+            close   -> RST  
+-sF     FIN  SCAN       Sets just the TCP FIN bit. 
+        >Send TCP packet(FIN flag on)
+            open    -> no reponse
+            close   -> RST    
+    =UDP=
+-sU     UDP SCAN [https://nmap.org/book/scan-methods-udp-scan.html]
+
+
+
+TCP flags : 
+
+Types of Flags: 
+ 
+Synchronization (SYN) - It is used in first step of connection establishment phase or 3-way handshake process between the two hosts. Only the first packet from sender as well as receiver should have this flag set. This is used for synchronizing sequence number i.e. to tell the other end which sequence number they should accept.
+Acknowledgement (ACK) - It is used to acknowledge packets which are successful received by the host. The flag is set if the acknowledgement number field contains a valid acknowledgement number. 
+In given below diagram, the receiver sends an ACK = 1 as well as SYN = 1 in the second step of connection establishment to tell sender that it received its initial packet. 
+    
+Finish (FIN) - It is used to request for connection termination i.e. when there is no more data from the sender, it requests for connection termination. This is the last packet sent by sender. It frees the reserved resources and gracefully terminate the connection. 
+    
+Reset (RST) - It is used to terminate the connection if the RST sender feels something is wrong with the TCP connection or that the conversation should not exist. It can get send from receiver side when packet is send to particular host that was not expecting it. 
+Urgent (URG) - It is used to indicate that the data contained in the packet should be prioritized and handled urgently by the receiver. This flag is used in combination with the Urgent Pointer field to identify the location of the urgent data in the packet.
+Push (PSH) - It is used to request immediate data delivery to the receiving host, without waiting for additional data to be buffered on the sender's side. This flag is commonly used in applications such as real-time audio or video streaming.
+Window (WND) - It is used to communicate the size of the receive window to the sender. The window size is the amount of data that the receiving host is capable of accepting at any given time. The sender should limit the amount of data it sends based on the size of the window advertised by the receiver.
+Checksum (CHK) - It is used to verify the integrity of the TCP segment during transmission. The checksum is computed over the entire segment, including the header and data fields, and is recalculated at each hop along the network path.
+Sequence Number (SEQ) - It is a unique number assigned to each segment by the sender to identify the order in which packets should be received by the receiver. The sequence number is used in conjunction with the acknowledgement number to ensure reliable data transfer and to prevent duplicate packets.
+Acknowledgement Number (ACK) - It is used to acknowledge the receipt of a TCP segment and to communicate the next expected sequence number to the sender. The acknowledgement number field contains the sequence number of the next expected segment, rather than the number of the last received segment.
+
+
+Headers :
+[https://nmap.org/book/tcpip-ref.html#tcp-header]
+
+
+
+ Nmap Tutorial to find Network Vulnerabilities :
+https://www.youtube.com/watch?v=4t4kBkMsDbQ
+
+Determining Firewall Rules :
+https://nmap.org/book/determining-firewall-rules.html#defeating-firewalls-ids-ackscan
