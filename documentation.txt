@@ -1,12 +1,6 @@
-DECOY : Multiple IPs
 
-https://stackoverflow.com/questions/72526066/how-does-nmap-decoy-works
-
-Functionnement : 
-On spam avec notre adresse et des fausses adresses en meme temps (Celles ci doivent etre vivantes).
-Le system ne sait pas quelle adresse est la notre / qui l'attaque 
-
-SYN, NULL, ACK, FIN, XMAS, UDP
+Timing and retries :
+https://nmap.org/book/performance-timing-templates.html
 
     =TCP scans=
 
@@ -75,3 +69,21 @@ https://www.youtube.com/watch?v=4t4kBkMsDbQ
 
 Determining Firewall Rules :
 https://nmap.org/book/determining-firewall-rules.html#defeating-firewalls-ids-ackscan
+
+
+
+
+---- BONUS ----
+>DECOY : Multiple IPs
+
+https://stackoverflow.com/questions/72526066/how-does-nmap-decoy-works
+
+Functionnement : 
+On spam avec notre adresse et des fausses adresses en meme temps (Celles ci doivent etre vivantes).
+Le system ne sait pas quelle adresse est la notre / qui l'attaque 
+
+>-sn
+    Ca ping juste
+
+> --max-retries <numtries> 
+(Specify the maximum number of port scan probe retransmissions) 
